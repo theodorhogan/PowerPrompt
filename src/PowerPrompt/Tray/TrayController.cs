@@ -75,13 +75,6 @@ public sealed class TrayController : IDisposable
 
         menu.Items.Add(new Separator());
 
-        // Temporary manual test of the tray state machine (removed after Stage 1).
-        var cycle = new MenuItem { Header = "Cycle states (test)" };
-        cycle.Click += (_, _) => CycleStatesForTest();
-        menu.Items.Add(cycle);
-
-        menu.Items.Add(new Separator());
-
         var quit = new MenuItem { Header = "Quit" };
         quit.Click += (_, _) => Application.Current.Shutdown();
         menu.Items.Add(quit);
@@ -105,23 +98,6 @@ public sealed class TrayController : IDisposable
 
         // Reflect the real registry state in case the write failed.
         _runOnStartupItem.IsChecked = StartupRegistrar.IsEnabled();
-    }
-
-    /// <summary>Idle -> Loading -> Done (which auto-reverts to Idle after 2s).</summary>
-    private void CycleStatesForTest()
-    {
-        switch (State.Current)
-        {
-            case TrayStateKind.Idle:
-                State.SetLoading();
-                break;
-            case TrayStateKind.Loading:
-                State.SetDone();
-                break;
-            default:
-                State.SetIdle();
-                break;
-        }
     }
 
     public void Dispose()
