@@ -1,0 +1,105 @@
+<UserControl x:Class="PowerPrompt.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="Margin" Value="0,14,0,6" />
+        </Style>
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Width" Value="120" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,12,0">
+
+                <!-- Hotkeys -->
+                <TextBlock Text="HOTKEYS" Style="{StaticResource SectionHeader}" />
+                <TextBlock Text="Click a field, then press the new combination (Esc cancels). A combo already used by another app shows as unavailable."
+                           Foreground="Gray" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6" />
+                <StackPanel Orientation="Horizontal" Margin="0,2">
+                    <TextBlock Text="Rewrite" Style="{StaticResource FieldLabel}" />
+                    <Button x:Name="RewriteHotkeyButton" Width="180" Height="26" Click="CaptureRewrite_Click" />
+                </StackPanel>
+                <TextBlock x:Name="RewriteHotkeyStatus" TextWrapping="Wrap" Margin="120,1,0,4" />
+                <StackPanel Orientation="Horizontal" Margin="0,2">
+                    <TextBlock Text="Library" Style="{StaticResource FieldLabel}" />
+                    <Button x:Name="LibraryHotkeyButton" Width="180" Height="26" Click="CaptureLibrary_Click" />
+                </StackPanel>
+                <TextBlock x:Name="LibraryHotkeyStatus" TextWrapping="Wrap" Margin="120,1,0,4" />
+
+                <!-- Claude -->
+                <TextBlock Text="CLAUDE" Style="{StaticResource SectionHeader}" />
+                <StackPanel Orientation="Horizontal" Margin="0,2">
+                    <TextBlock Text="Executable path" Style="{StaticResource FieldLabel}" />
+                    <TextBox x:Name="ClaudePathBox" Width="320" Padding="3" />
+                </StackPanel>
+                <TextBlock x:Name="ClaudeStatus" Margin="120,2,0,0" TextWrapping="Wrap" FontSize="12" />
+                <StackPanel Orientation="Horizontal" Margin="0,2">
+                    <TextBlock Text="Model" Style="{StaticResource FieldLabel}" />
+                    <ComboBox x:Name="ModelBox" Width="160" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,2">
+                    <TextBlock Text="Timeout (sec)" Style="{StaticResource FieldLabel}" />
+                    <TextBox x:Name="TimeoutBox" Width="80" Padding="3" />
+                    <TextBlock Text="Max input chars" VerticalAlignment="Center" Margin="20,0,8,0" />
+                    <TextBox x:Name="MaxInputBox" Width="80" Padding="3" />
+                </StackPanel>
+
+                <!-- Templates -->
+                <TextBlock Text="REWRITE TEMPLATES (git-shared, use {text})" Style="{StaticResource SectionHeader}" />
+                <TextBlock Text="Correct spelling" Margin="0,2,0,2" />
+                <TextBox x:Name="CorrectSpellingBox" Height="56" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto" FontFamily="Consolas" />
+                <TextBlock Text="Polish" Margin="0,8,0,2" />
+                <TextBox x:Name="PolishBox" Height="56" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto" FontFamily="Consolas" />
+                <TextBlock Text="Professionalize" Margin="0,8,0,2" />
+                <TextBox x:Name="ProfessionalizeBox" Height="56" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto" FontFamily="Consolas" />
+
+                <!-- Startup -->
+                <TextBlock Text="STARTUP" Style="{StaticResource SectionHeader}" />
+                <CheckBox x:Name="RunOnStartupCheck" Content="Run PowerPrompt on Windows startup"
+                          Click="RunOnStartup_Click" />
+
+                <!-- Sync -->
+                <TextBlock Text="SYNC (git) — OPTIONAL" Style="{StaticResource SectionHeader}" />
+                <TextBlock Text="Sync your library + templates between machines via a private git repo. Leave blank to stay local-only."
+                           Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,6" />
+                <StackPanel Orientation="Horizontal" Margin="0,2">
+                    <TextBlock Text="Remote URL" Style="{StaticResource FieldLabel}" />
+                    <TextBox x:Name="GitRemoteBox" Width="340" Padding="3" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,4">
+                    <TextBlock Text="GitHub token" Style="{StaticResource FieldLabel}" />
+                    <PasswordBox x:Name="TokenBox" Width="220" />
+                    <Button Content="Save token" Margin="8,0,0,0" Click="SaveToken_Click" />
+                    <TextBlock x:Name="TokenStatus" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{StaticResource TextDim}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,8">
+                    <Button x:Name="SyncNowButton" Content="Link &amp; Sync now" Style="{StaticResource AccentButton}" Click="SyncNow_Click" />
+                    <TextBlock x:Name="SyncStatus" VerticalAlignment="Center" Margin="12,0,0,0" Foreground="{StaticResource TextDim}" TextWrapping="Wrap" />
+                </StackPanel>
+                <TextBlock x:Name="SyncTimes" Foreground="{StaticResource TextDim}" FontSize="11.5" Margin="0,2,0,8" />
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Save bar -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,12,0">
+            <TextBlock x:Name="SavedNote" Text="Saved ✓" Foreground="#FF2E7D32" FontWeight="SemiBold"
+                       VerticalAlignment="Center" Margin="0,0,12,0" Visibility="Collapsed" />
+            <Button Content="Save" Width="100" Height="30" Click="Save_Click" />
+        </StackPanel>
+    </Grid>
+</UserControl>

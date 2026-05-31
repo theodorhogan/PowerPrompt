@@ -1,0 +1,108 @@
+<UserControl x:Class="PowerPrompt.Views.LibraryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,10">
+            <Button DockPanel.Dock="Right" Content="+ Prompt" Style="{StaticResource AccentButton}" Margin="6,0,0,0" Click="NewPrompt_Click" />
+            <Button DockPanel.Dock="Right" Content="+ Category" Click="NewCategory_Click" />
+            <Grid Margin="0,0,8,0">
+                <TextBox x:Name="SearchBox" TextChanged="SearchBox_TextChanged" VerticalContentAlignment="Center" Height="30" />
+                <TextBlock x:Name="SearchPlaceholder" Text="Search prompts…" Foreground="{StaticResource TextDim}"
+                           Margin="9,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False" />
+            </Grid>
+        </DockPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Categories -->
+            <DockPanel Grid.Column="0" Margin="0,0,8,0">
+                <TextBlock DockPanel.Dock="Top" Text="CATEGORIES" FontSize="10.5" Foreground="{StaticResource TextDim}" Margin="4,0,0,6" />
+                <Grid>
+                    <ListBox x:Name="CategoriesList" SelectionChanged="CategoriesList_SelectionChanged"
+                             PreviewKeyDown="CategoriesList_PreviewKeyDown">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Rename" Click="RenameCategory_Click" />
+                                <MenuItem Header="Delete" Click="DeleteCategory_Click" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+                    <TextBlock x:Name="NoCategories" Text="No categories yet — add one"
+                               Foreground="{StaticResource TextDim}" Margin="6" TextWrapping="Wrap"
+                               IsHitTestVisible="False" Visibility="Collapsed" />
+                </Grid>
+            </DockPanel>
+
+            <!-- Prompts -->
+            <DockPanel Grid.Column="1" Margin="0,0,12,0">
+                <TextBlock x:Name="PromptsHeader" DockPanel.Dock="Top" Text="PROMPTS"
+                           FontSize="10.5" Foreground="{StaticResource TextDim}" Margin="4,0,0,6" />
+                <Grid>
+                    <ListBox x:Name="PromptsList" DisplayMemberPath="Name"
+                             SelectionChanged="PromptsList_SelectionChanged"
+                             PreviewKeyDown="PromptsList_PreviewKeyDown">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Copy" Click="CopyPrompt_Click" />
+                                <Separator />
+                                <MenuItem Header="Move to…" Click="MovePrompt_Click" />
+                                <MenuItem Header="Delete" Click="DeletePrompt_Click" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+                    <TextBlock x:Name="EmptyPrompts" Foreground="{StaticResource TextDim}" Margin="6" TextWrapping="Wrap"
+                               IsHitTestVisible="False" Visibility="Collapsed" />
+                </Grid>
+            </DockPanel>
+
+            <!-- Editor / preview -->
+            <Border Grid.Column="2" Background="{StaticResource Surface}" CornerRadius="8" Padding="14">
+              <Grid>
+                <Grid x:Name="EditorPanel" Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="0,0,0,8">
+                        <Button DockPanel.Dock="Right" Content="Copy" Click="CopyPrompt_Click" />
+                        <TextBlock Text="PROMPT" FontSize="10.5" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" />
+                    </DockPanel>
+
+                    <TextBox Grid.Row="1" x:Name="NameBox" Margin="0,0,0,8" Height="32"
+                             VerticalContentAlignment="Center" FontWeight="SemiBold"
+                             TextChanged="Editor_TextChanged" />
+
+                    <TextBox Grid.Row="2" x:Name="BodyBox" AcceptsReturn="True" AcceptsTab="True"
+                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                             VerticalContentAlignment="Top" TextChanged="Editor_TextChanged" />
+
+                    <DockPanel Grid.Row="3" Margin="0,10,0,0">
+                        <Button DockPanel.Dock="Right" x:Name="SaveButton" Content="Save changes"
+                                Style="{StaticResource AccentButton}" IsEnabled="False" Click="SavePrompt_Click" />
+                        <TextBlock x:Name="EditorNote" Foreground="#FF53C07A" FontWeight="SemiBold"
+                                   VerticalAlignment="Center" Visibility="Collapsed" />
+                    </DockPanel>
+                </Grid>
+
+                <TextBlock x:Name="EditorPlaceholder" Text="Select a prompt to view and edit it."
+                           Foreground="{StaticResource TextDim}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           TextWrapping="Wrap" />
+              </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
