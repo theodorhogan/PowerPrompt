@@ -32,6 +32,17 @@ public partial class LibraryView : UserControl
         _noteTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.4) };
         _noteTimer.Tick += (_, _) => { _noteTimer.Stop(); EditorNote.Visibility = Visibility.Collapsed; };
 
+        // In-app shortcut: Ctrl+F jumps to the search box (not a global hotkey).
+        PreviewKeyDown += (_, e) =>
+        {
+            if (e.Key == Key.F && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                SearchBox.Focus();
+                SearchBox.SelectAll();
+                e.Handled = true;
+            }
+        };
+
         Loaded += (_, _) => { RefreshCategories(); FocusCategories(); };
     }
 

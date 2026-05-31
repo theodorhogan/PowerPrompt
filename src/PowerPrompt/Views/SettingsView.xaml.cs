@@ -75,7 +75,11 @@ public partial class SettingsView : UserControl
         ProfessionalizeBox.Text = _settings.Templates.Professionalize;
 
         RunOnStartupCheck.IsChecked = StartupRegistrar.IsEnabled();
-        TokenStatus.Text = CredentialManager.HasToken() ? "token saved ✓" : "no token";
+        bool hasToken = CredentialManager.HasToken();
+        TokenStatus.Text = hasToken ? "token saved ✓" : "no token yet";
+        TokenStatus.Foreground = hasToken
+            ? new SolidColorBrush(Color.FromRgb(0x53, 0xC0, 0x7A))
+            : (Brush)FindResource("TextDim");
         ShowSyncStatus(_git.Status);
 
         string? claudeLoc = Rewrite.ClaudeRunner.Locate(s.ClaudePath);
@@ -255,10 +259,15 @@ public partial class SettingsView : UserControl
     private void SaveToken_Click(object sender, RoutedEventArgs e)
     {
         if (TokenBox.Password.Length == 0)
+        {
+            TokenStatus.Text = "paste a token first";
+            TokenStatus.Foreground = Brushes.IndianRed;
             return;
+        }
         CredentialManager.SaveToken(TokenBox.Password);
-        TokenBox.Clear();
-        TokenStatus.Text = "token saved ✓";
+        TokenBox.Clear(); // cleared for security — the token is now in Credential Manager
+        TokenStatus.Text = "saved ✓ (stored securely)";
+        TokenStatus.Foreground = new SolidColorBrush(Color.FromRgb(0x53, 0xC0, 0x7A));
     }
 
     private async void SyncNow_Click(object sender, RoutedEventArgs e)

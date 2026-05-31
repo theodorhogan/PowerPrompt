@@ -21,6 +21,7 @@
                  AcceptsTab="True"
                  TextWrapping="Wrap"
                  VerticalScrollBarVisibility="Auto"
+                 VerticalContentAlignment="Stretch"
                  FontFamily="Consolas" />
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">

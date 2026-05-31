@@ -57,9 +57,9 @@
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="OUTPUT" FontSize="10.5" Foreground="{StaticResource TextDim}" Margin="8,0,0,3" />
 
                 <TextBox Grid.Row="1" Grid.Column="0" x:Name="InputBox" IsReadOnly="True"
-                         TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
+                         TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" />
                 <TextBox Grid.Row="1" Grid.Column="1" x:Name="OutputBox" IsReadOnly="True" Margin="8,0,0,0"
-                         TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
+                         TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" />
 
                 <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                     <TextBlock x:Name="CopiedNote" Text="Copied ✓" Foreground="#FF53C07A" FontWeight="SemiBold"

@@ -60,13 +60,13 @@
                 <TextBlock Text="REWRITE TEMPLATES (git-shared, use {text})" Style="{StaticResource SectionHeader}" />
                 <TextBlock Text="Correct spelling" Margin="0,2,0,2" />
                 <TextBox x:Name="CorrectSpellingBox" Height="56" AcceptsReturn="True" TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto" FontFamily="Consolas" />
+                         VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" FontFamily="Consolas" />
                 <TextBlock Text="Polish" Margin="0,8,0,2" />
                 <TextBox x:Name="PolishBox" Height="56" AcceptsReturn="True" TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto" FontFamily="Consolas" />
+                         VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" FontFamily="Consolas" />
                 <TextBlock Text="Professionalize" Margin="0,8,0,2" />
                 <TextBox x:Name="ProfessionalizeBox" Height="56" AcceptsReturn="True" TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto" FontFamily="Consolas" />
+                         VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" FontFamily="Consolas" />
 
                 <!-- Startup -->
                 <TextBlock Text="STARTUP" Style="{StaticResource SectionHeader}" />
@@ -75,8 +75,10 @@
 
                 <!-- Sync -->
                 <TextBlock Text="SYNC (git) — OPTIONAL" Style="{StaticResource SectionHeader}" />
-                <TextBlock Text="Sync your library + templates between machines via a private git repo. Leave blank to stay local-only."
-                           Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,6" />
+                <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,8">
+                    Sync your library + templates between machines via a private git repo (optional).<LineBreak />
+                    1) paste the repo URL&#160;&#160;·&#160;&#160;2) paste a token and click Save token&#160;&#160;·&#160;&#160;3) click Link &amp; Sync now.
+                </TextBlock>
                 <StackPanel Orientation="Horizontal" Margin="0,2">
                     <TextBlock Text="Remote URL" Style="{StaticResource FieldLabel}" />
                     <TextBox x:Name="GitRemoteBox" Width="340" Padding="3" />
