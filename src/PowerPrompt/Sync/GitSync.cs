@@ -99,6 +99,7 @@ public sealed class GitSync : IDisposable
                     Directory.Move(_dataDir, backup);
                 Directory.CreateDirectory(_dataDir);
 
+                _credAttempt = 0;
                 Repository.Clone(url, _dataDir, new CloneOptions
                 {
                     FetchOptions = { CredentialsProvider = Credentials }
@@ -167,6 +168,7 @@ public sealed class GitSync : IDisposable
 
     private void Fetch(Repository repo)
     {
+        _credAttempt = 0;
         var remote = repo.Network.Remotes["origin"];
         var refSpecs = remote.FetchRefSpecs.Select(r => r.Specification);
         Commands.Fetch(repo, "origin", refSpecs, new FetchOptions { CredentialsProvider = Credentials }, null);
@@ -225,6 +227,7 @@ public sealed class GitSync : IDisposable
         if (repo.Head.Tip is null)
             return;
 
+        _credAttempt = 0;
         string branch = repo.Head.FriendlyName;
         var options = new PushOptions { CredentialsProvider = Credentials };
         repo.Network.Push(repo.Network.Remotes["origin"],
@@ -243,14 +246,23 @@ public sealed class GitSync : IDisposable
             repo.Network.Remotes.Update("origin", r => r.Url = url);
     }
 
+    private int _credAttempt;
+
     private LibGit2Sharp.Handlers.CredentialsHandler Credentials => (_, _, _) =>
     {
         string? token = _tokenProvider();
         if (string.IsNullOrEmpty(token))
             return new DefaultCredentials();
-        // GitHub PAT over HTTPS: token as username, empty password. (If a provider
-        // rejects this, swap to Username = "x-access-token", Password = token.)
-        return new UsernamePasswordCredentials { Username = token, Password = string.Empty };
+
+        // libgit2 re-invokes this callback after an auth rejection, so we cycle
+        // through the credential shapes GitHub accepts for a PAT over HTTPS rather
+        // than depending on guessing the single "right" one. Whichever works wins.
+        return (_credAttempt++ % 3) switch
+        {
+            0 => new UsernamePasswordCredentials { Username = token, Password = string.Empty },
+            1 => new UsernamePasswordCredentials { Username = "x-access-token", Password = token },
+            _ => new UsernamePasswordCredentials { Username = token, Password = "x-oauth-basic" },
+        };
     };
 
     private static Signature BuildSignature(Repository repo)
