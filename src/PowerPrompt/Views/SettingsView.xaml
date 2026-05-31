@@ -92,6 +92,12 @@
                 </StackPanel>
                 <TextBlock x:Name="SyncTimes" Foreground="{StaticResource TextDim}" FontSize="11.5" Margin="0,2,0,8" />
 
+                <!-- Uninstall -->
+                <TextBlock Text="UNINSTALL" Style="{StaticResource SectionHeader}" />
+                <TextBlock Text="Cleanly removes PowerPrompt — the startup entry and saved token — then deletes the program (and optionally your data)."
+                           Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,6" />
+                <Button Content="Uninstall PowerPrompt…" HorizontalAlignment="Left" Click="Uninstall_Click" />
+
             </StackPanel>
         </ScrollViewer>
 

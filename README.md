@@ -83,6 +83,14 @@ It's self-contained (bundles the .NET runtime, ~156 MB) so it runs on any Window
 
 ---
 
+## Uninstall
+
+There's no installer, but there *is* a clean uninstall built in — because simply deleting the exe would leave two hidden traces behind (a startup registry entry if you enabled "Run on startup", and your GitHub token in Windows Credential Manager).
+
+Open **Settings → Uninstall → Uninstall PowerPrompt…**. It removes those traces, then closes and deletes the program. It asks whether to also delete your data (`%APPDATA%\PowerPrompt` — your prompts, templates, history, settings) or keep it in case you reinstall.
+
+(If you ever need to do it by hand: delete the exe, delete `%APPDATA%\PowerPrompt`, remove the `PowerPrompt` value under `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`, and remove the `PowerPrompt:GitHubToken` generic credential in Credential Manager.)
+
 ## Notes
 
 - **Windows only** (.NET 8 / WPF).

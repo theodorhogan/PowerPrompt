@@ -318,6 +318,28 @@ public partial class SettingsView : UserControl
         SyncTimes.Text = $"Last pull: {pull}   ·   Last push: {push}";
     }
 
+    // ---- Uninstall ----
+
+    private void Uninstall_Click(object sender, RoutedEventArgs e)
+    {
+        var confirm = MessageBox.Show(
+            "Uninstall PowerPrompt?\n\nThis removes the Windows startup entry and the saved GitHub token, then closes and deletes the program.",
+            "PowerPrompt — uninstall", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+        if (confirm != MessageBoxResult.OK)
+            return;
+
+        var data = MessageBox.Show(
+            "Also delete your saved prompts, templates, history and settings?\n\n" +
+            "Yes — remove everything (the %APPDATA%\\PowerPrompt folder)\n" +
+            "No — keep your data in case you reinstall",
+            "PowerPrompt — uninstall", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+        if (data == MessageBoxResult.Cancel)
+            return;
+
+        Uninstaller.Run(deleteData: data == MessageBoxResult.Yes);
+        Application.Current.Shutdown();
+    }
+
     // ---- Save ----
 
     private void Save_Click(object sender, RoutedEventArgs e)
